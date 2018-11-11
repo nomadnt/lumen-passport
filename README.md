@@ -103,6 +103,9 @@ This method will register the routes necessary to issue access tokens and revoke
 
 namespace App\Providers;
 
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Carbon;
+
 use Nomadnt\LumenPassport\Passport;
 
 class AuthServiceProvider extends ServiceProvider{
