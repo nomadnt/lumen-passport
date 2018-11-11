@@ -23,9 +23,9 @@ class RouteRegistrar extends Registrar
      */
     public function all()
     {
-        // $this->forAuthorization();
+        $this->forAuthorization();
         $this->forAccessTokens();
-        // $this->forTransientTokens();
+        $this->forTransientTokens();
         $this->forClients();
         $this->forPersonalAccessTokens();
     }

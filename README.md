@@ -122,7 +122,20 @@ class AuthServiceProvider extends ServiceProvider{
      * @return void
      */
     public function boot(){
+        // register passport routes
         Passport::routes();
+
+        // revoke previous tokens
+        Passport::$revokeOtherTokens = true;
+
+        // prune previous tokens istead of mark as revoked
+        Passport::$pruneRevokedTokens = true;
+
+        // change the default token expiration
+        Passport::tokensExpireIn(Carbon::now()->addDays(15));
+
+        // change the default refresh token expiration
+        Passport::refreshTokensExpireIn(Carbon::now()->addDays(30));
     }
 }
 

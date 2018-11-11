@@ -24,11 +24,6 @@ class Passport extends LaravelPassport{
 
         $options = array_merge($defaultOptions, $options);
 
-        // $callback->group($options, function ($router) use ($callback) {
-        //     $routes = new RouteRegistrar($router);
-        //     $routes->all();
-        // });
-
         Route::group($options, function ($router) use ($callback) {
             $callback(new RouteRegistrar($router));
         });
