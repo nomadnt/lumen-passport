@@ -51,7 +51,8 @@ $app->withEloquent();
 
 // Enable auth middleware (shipped with Lumen)
 $app->routeMiddleware([
-    'auth' => App\Http\Middleware\Authenticate::class,
+    'auth'     => App\Http\Middleware\Authenticate::class,
+    'throttle' => Nomadnt\LumenPassport\Middleware\ThrottleRequests::class
 ]);
 
 // Finally register two service providers - original one and Lumen adapter
