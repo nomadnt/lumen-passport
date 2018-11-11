@@ -1,3 +1,11 @@
+<p align="center"><img src="https://laravel.com/assets/img/components/logo-passport.svg"></p>
+
+<p align="center">
+<a href="https://packagist.org/packages/nomadnt/laravel-passport"><img src="https://poser.pugx.org/nomadnt/laravel-passport/d/total.svg" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/nomadnt/laravel-passport"><img src="https://poser.pugx.org/nomadnt/laravel-passport/v/stable.svg" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/nomadnt/laravel-passport"><img src="https://poser.pugx.org/nomadnt/laravel-passport/license.svg" alt="License"></a>
+</p>
+
 # Lumen Passport
 
 Lumen porting of Laravel Passport.
