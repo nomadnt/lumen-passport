@@ -1,10 +1,9 @@
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-passport.svg"></p>
 
-<p align="center">
 [![Total Downloads](https://poser.pugx.org/nomadnt/lumen-passport/downloads)](https://packagist.org/packages/nomadnt/lumen-passport)
 [![Latest Stable Version](https://poser.pugx.org/nomadnt/lumen-passport/v/stable)](https://packagist.org/packages/nomadnt/lumen-passport)
 [![License](https://poser.pugx.org/nomadnt/lumen-passport/license)](https://packagist.org/packages/nomadnt/lumen-passport)
-</p>
+
 
 # Lumen Passport
 
