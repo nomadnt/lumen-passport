@@ -1,10 +1,8 @@
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-passport.svg"></p>
 
-<p align="center">
-<a href="https://packagist.org/packages/nomadnt/lumen-passport"><img src="https://poser.pugx.org/nomadnt/lumen-passport/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/nomadnt/lumen-passport"><img src="https://poser.pugx.org/nomadnt/lumen-passport/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/nomadnt/lumen-passport"><img src="https://poser.pugx.org/nomadnt/lumen-passport/license.svg" alt="License"></a>
-</p>
+[![Total Downloads](https://poser.pugx.org/nomadnt/lumen-passport/downloads)](https://packagist.org/packages/nomadnt/lumen-passport)
+[![Latest Stable Version](https://poser.pugx.org/nomadnt/lumen-passport/v/stable)](https://packagist.org/packages/nomadnt/lumen-passport)
+[![License](https://poser.pugx.org/nomadnt/lumen-passport/license)](https://packagist.org/packages/nomadnt/lumen-passport)
 
 # Lumen Passport
 
