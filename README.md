@@ -128,9 +128,7 @@ Make sure your user model uses Passport's ```HasApiTokens``` trait, eg.:
 
 ```php
 
-...
 use Laravel\Passport\HasApiTokens;
-...
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
