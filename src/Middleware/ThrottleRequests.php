@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Http\Middleware;
+<?php namespace Nomadnt\LumenPassport\Middleware;
 
 use Closure;
 use RuntimeException;
