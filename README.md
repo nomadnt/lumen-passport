@@ -75,22 +75,14 @@ Edit config/auth.php to suit your needs. A simple example:
 
 ```php
 return [
-    'defaults' => [
-        'guard' => 'api'
-    ],
+    'defaults' => ['guard' => 'api'],
 
     'guards' => [
-        'api' => [
-            'driver' => 'passport',
-            'provider' => 'users',
-        ],
+        'api' => ['driver' => 'passport', 'provider' => 'users'],
     ],
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => \App\User::class
-        ]
+        'users' => ['driver' => 'eloquent', 'model' => \App\User::class]
     ]
 ];
 ```
