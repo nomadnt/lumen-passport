@@ -5,8 +5,8 @@ The idea come from https://github.com/dusterio/lumen-passport but try to make it
 
 ## Dependencies
 
-* PHP >= 5.6.3
-* Lumen >= 5.3
+* PHP >= 7.0
+* Lumen >= 5.5
 
 ## Installation via Composer
 
@@ -90,7 +90,7 @@ return [
 
 ## Registering Routes
 
-Next, you should call the LumenPassport::routes method within the boot method of your application (one of your service providers). 
+Next, you should call the LumenPassport::routes method within the boot method of your application (one of your service providers).
 This method will register the routes necessary to issue access tokens and revoke access tokens, clients, and personal access tokens:
 
 ```php
@@ -107,7 +107,7 @@ class AuthServiceProvider extends ServiceProvider{
      * @return void
      */
     public function register(){
-        
+
     }
 
     /**
@@ -119,7 +119,7 @@ class AuthServiceProvider extends ServiceProvider{
         Passport::routes();
     }
 }
-   
+
 ```
 
 ## User model
