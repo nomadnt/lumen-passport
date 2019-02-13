@@ -1,8 +1,8 @@
 {
-    "name": "nomadnt/lumen-passport",
-    "description": "Lumen porting of Laravel Passport",
+    "name": "payps/lumen-passport",
+    "description": "Lumen porting of Laravel Passport - Upgraded from nomadnt Lumen Passport",
     "keywords": ["php","lumen","laravel passport"],
-    "homepage": "https://github.com/nomadnt/lumen-passport",
+    "homepage": "https://github.com/fleflochN/lumen-passport",
     "license": "MIT",
     "authors": [
         {
