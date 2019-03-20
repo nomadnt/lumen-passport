@@ -1,4 +1,6 @@
-<?php namespace Nomadnt\LumenPassport;
+<?php
+
+namespace Nomadnt\LumenPassport;
 
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Passport as LaravelPassport;

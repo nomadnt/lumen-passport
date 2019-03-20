@@ -1,4 +1,6 @@
-<?php namespace Nomadnt\LumenPassport;
+<?php
+
+namespace Nomadnt\LumenPassport;
 
 use Laravel\Lumen\Routing\Router;
 use Laravel\Passport\RouteRegistrar as Registrar;
