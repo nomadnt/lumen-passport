@@ -12,8 +12,8 @@ The idea come from https://github.com/dusterio/lumen-passport but try to make it
 
 ## Dependencies
 
-* PHP >= 7.0
-* Lumen >= 5.5
+* PHP >= 7.1.3
+* Lumen >= 5.6
 
 ## Installation via Composer
 
