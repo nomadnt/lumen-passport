@@ -13,7 +13,7 @@ The idea come from https://github.com/dusterio/lumen-passport but try to make it
 ## Dependencies
 
 * PHP >= 7.0
-* Lumen >= 5.5
+* Lumen >= 5.6
 
 ## Installation via Composer
 
@@ -34,7 +34,7 @@ Or if you prefer, edit `composer.json` manually:
 ```json
 {
     "require": {
-        "nomadnt/lumen-passport": "~4.0"
+        "nomadnt/lumen-passport": "^7.2"
     }
 }
 ```
