@@ -191,8 +191,6 @@ namespace App\Listeners;
 use Laravel\Passport\Events\AccessTokenCreated;
 use Laravel\Passport\Token;
 
-use NomadNT\LumenPassport\Passport;
-
 class RevokeOldTokens{
 
     /**
@@ -214,7 +212,7 @@ class RevokeOldTokens{
         Token::where(function($query) use($event){
             $query->where('user_id', $event->userId);
             $query->where('id', '<>', $event->tokenId);
-        })->update(['revoked' => true]);        
+        })->revoke();
     }
 }
 ```
@@ -226,8 +224,6 @@ namespace App\Listeners;
 
 use Laravel\Passport\Events\AccessTokenCreated;
 use Laravel\Passport\Token;
-
-use NomadNT\LumenPassport\Passport;
 
 class PruneRevokedTokens{
 
