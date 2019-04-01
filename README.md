@@ -122,12 +122,6 @@ class AuthServiceProvider extends ServiceProvider{
         // register passport routes
         Passport::routes();
 
-        // revoke previous tokens
-        Passport::$revokeOtherTokens = true;
-
-        // prune previous tokens istead of mark as revoked
-        Passport::$pruneRevokedTokens = true;
-
         // change the default token expiration
         Passport::tokensExpireIn(Carbon::now()->addDays(15));
 
@@ -158,5 +152,102 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     use HasApiTokens, Authenticatable, Authorizable;
 
     // rest of the model
+}
+```
+
+## Access Token Events
+
+If you want to revoke or purge tokens you have to create related Listeners and register 
+on your `App\Http\Providers\EventServiceProvider` istead of using deprecated properties
+`Passport::$revokeOtherTokens = true;` and `Passport::$pruneRevokedTokens = true;`
+
+```php
+
+namespace App\Providers;
+
+use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
+
+class EventServiceProvider extends ServiceProvider{
+
+    /**
+     * The event listener mappings for the application.
+     *
+     * @var array
+     */
+    protected $listen = [
+        'Laravel\Passport\Events\AccessTokenCreated' => [
+            'App\Listeners\RevokeOldTokens',
+            'App\Listeners\PruneRevokedTokens',
+        ]
+    ];
+}
+```
+
+### Revoke Old Tokens
+
+```php
+namespace App\Listeners;
+
+use Laravel\Passport\Events\AccessTokenCreated;
+use Laravel\Passport\Token;
+
+class RevokeOldTokens{
+
+    /**
+     * Create the event listener.
+     *
+     * @return void
+     */
+    public function __construct(){
+        //
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param  \App\Events\OrderShipped  $event
+     * @return void
+     */
+    public function handle(AccessTokenCreated $event){
+        Token::where(function($query) use($event){
+            $query->where('user_id', $event->userId);
+            $query->where('id', '<>', $event->tokenId);
+        })->revoke();
+    }
+}
+```
+
+### Prune Revoked Tokens
+
+```php
+namespace App\Listeners;
+
+use Laravel\Passport\Events\AccessTokenCreated;
+use Laravel\Passport\Token;
+
+class PruneRevokedTokens{
+
+    /**
+     * Create the event listener.
+     *
+     * @return void
+     */
+    public function __construct(){
+        //
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param  \App\Events\AccessTokenCreated  $event
+     * @return void
+     */
+    public function handle(AccessTokenCreated $event){
+        Token::where(function($query) use($event){
+            $query->where('user_id', $event->userId);
+            $query->where('id', '<>', $event->tokenId);
+            $query->where('revoked', true);
+        })->delete();
+    }
 }
 ```
