@@ -97,19 +97,21 @@ This method will register the routes necessary to issue access tokens and revoke
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Carbon;
 
 use Nomadnt\LumenPassport\Passport;
 
-class AuthServiceProvider extends ServiceProvider{
-
+class AuthServiceProvider extends ServiceProvider
+{
     /**
      * Register any application services.
      *
      * @return void
      */
-    public function register(){
+    public function register()
+	{
 
     }
 
@@ -118,7 +120,8 @@ class AuthServiceProvider extends ServiceProvider{
      *
      * @return void
      */
-    public function boot(){
+    public function boot()
+	{
         // register passport routes
         Passport::routes();
 
@@ -191,14 +194,15 @@ namespace App\Listeners;
 use Laravel\Passport\Events\AccessTokenCreated;
 use Laravel\Passport\Token;
 
-class RevokeOtherTokens{
-
+class RevokeOtherTokens
+{
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct(){
+    public function __construct()
+	{
         //
     }
 
@@ -208,7 +212,8 @@ class RevokeOtherTokens{
      * @param  \App\Events\OrderShipped  $event
      * @return void
      */
-    public function handle(AccessTokenCreated $event){
+    public function handle(AccessTokenCreated $event)
+	{
         Token::where(function($query) use($event){
             $query->where('user_id', $event->userId);
             $query->where('id', '<>', $event->tokenId);
@@ -225,14 +230,15 @@ namespace App\Listeners;
 use Laravel\Passport\Events\AccessTokenCreated;
 use Laravel\Passport\Token;
 
-class PruneRevokedTokens{
-
+class PruneRevokedTokens
+{
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct(){
+    public function __construct()
+	{
         //
     }
 
@@ -242,7 +248,8 @@ class PruneRevokedTokens{
      * @param  \App\Events\AccessTokenCreated  $event
      * @return void
      */
-    public function handle(AccessTokenCreated $event){
+    public function handle(AccessTokenCreated $event)
+	{
         Token::where(function($query) use($event){
             $query->where('user_id', $event->userId);
             $query->where('id', '<>', $event->tokenId);

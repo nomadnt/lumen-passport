@@ -15,10 +15,18 @@ class PassportServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        parent::boot();
-
-        $this->app->singleton(Connection::class, function() {
+        $this->app->singleton(Connection::class, function(){
             return $this->app['db.connection'];
-        });        
+        });
+
+        if(preg_match('/5\.[678]\.\d+/', $this->app->version())){
+            $this->app->singleton(\Illuminate\Hashing\HashManager::class, function ($app) {
+                return new \Illuminate\Hashing\HashManager($app);
+            });
+        }
+
+        if($this->app->runningInConsole()){
+            $this->commands([Console\Commands\PurgeCommand::class]);
+        }
     }
 }
