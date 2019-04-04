@@ -74,6 +74,11 @@ php artisan passport:install
 
 Edit config/auth.php to suit your needs. A simple example:
 
+```bash
+$ mkdir config
+$ cp vendor/laravel/lumen-framework/config/auth.php config
+```
+
 ```php
 return [
     'defaults' => ['guard' => 'api'],
@@ -97,19 +102,21 @@ This method will register the routes necessary to issue access tokens and revoke
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Carbon;
 
 use Nomadnt\LumenPassport\Passport;
 
-class AuthServiceProvider extends ServiceProvider{
-
+class AuthServiceProvider extends ServiceProvider
+{
     /**
      * Register any application services.
      *
      * @return void
      */
-    public function register(){
+    public function register()
+    {
 
     }
 
@@ -118,7 +125,8 @@ class AuthServiceProvider extends ServiceProvider{
      *
      * @return void
      */
-    public function boot(){
+    public function boot()
+    {
         // register passport routes
         Passport::routes();
 
@@ -176,14 +184,14 @@ class EventServiceProvider extends ServiceProvider{
      */
     protected $listen = [
         'Laravel\Passport\Events\AccessTokenCreated' => [
-            'App\Listeners\RevokeOldTokens',
+            'App\Listeners\RevokeOtherTokens',
             'App\Listeners\PruneRevokedTokens',
         ]
     ];
 }
 ```
 
-### Revoke Old Tokens
+### Revoke Other Tokens
 
 ```php
 namespace App\Listeners;
@@ -191,14 +199,15 @@ namespace App\Listeners;
 use Laravel\Passport\Events\AccessTokenCreated;
 use Laravel\Passport\Token;
 
-class RevokeOldTokens{
-
+class RevokeOtherTokens
+{
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct(){
+    public function __construct()
+    {
         //
     }
 
@@ -208,7 +217,8 @@ class RevokeOldTokens{
      * @param  \App\Events\OrderShipped  $event
      * @return void
      */
-    public function handle(AccessTokenCreated $event){
+    public function handle(AccessTokenCreated $event)
+    {
         Token::where(function($query) use($event){
             $query->where('user_id', $event->userId);
             $query->where('id', '<>', $event->tokenId);
@@ -225,14 +235,15 @@ namespace App\Listeners;
 use Laravel\Passport\Events\AccessTokenCreated;
 use Laravel\Passport\Token;
 
-class PruneRevokedTokens{
-
+class PruneRevokedTokens
+{
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct(){
+    public function __construct()
+    {
         //
     }
 
@@ -242,7 +253,8 @@ class PruneRevokedTokens{
      * @param  \App\Events\AccessTokenCreated  $event
      * @return void
      */
-    public function handle(AccessTokenCreated $event){
+    public function handle(AccessTokenCreated $event)
+    {
         Token::where(function($query) use($event){
             $query->where('user_id', $event->userId);
             $query->where('id', '<>', $event->tokenId);
