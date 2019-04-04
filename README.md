@@ -74,6 +74,11 @@ php artisan passport:install
 
 Edit config/auth.php to suit your needs. A simple example:
 
+```bash
+$ mkdir config
+$ cp vendor/laravel/lumen-framework/config/auth.php config
+```
+
 ```php
 return [
     'defaults' => ['guard' => 'api'],
@@ -111,7 +116,7 @@ class AuthServiceProvider extends ServiceProvider
      * @return void
      */
     public function register()
-	{
+    {
 
     }
 
@@ -121,7 +126,7 @@ class AuthServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
-	{
+    {
         // register passport routes
         Passport::routes();
 
@@ -202,7 +207,7 @@ class RevokeOtherTokens
      * @return void
      */
     public function __construct()
-	{
+    {
         //
     }
 
@@ -213,7 +218,7 @@ class RevokeOtherTokens
      * @return void
      */
     public function handle(AccessTokenCreated $event)
-	{
+    {
         Token::where(function($query) use($event){
             $query->where('user_id', $event->userId);
             $query->where('id', '<>', $event->tokenId);
@@ -238,7 +243,7 @@ class PruneRevokedTokens
      * @return void
      */
     public function __construct()
-	{
+    {
         //
     }
 
@@ -249,7 +254,7 @@ class PruneRevokedTokens
      * @return void
      */
     public function handle(AccessTokenCreated $event)
-	{
+    {
         Token::where(function($query) use($event){
             $query->where('user_id', $event->userId);
             $query->where('id', '<>', $event->tokenId);
