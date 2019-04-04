@@ -176,14 +176,14 @@ class EventServiceProvider extends ServiceProvider{
      */
     protected $listen = [
         'Laravel\Passport\Events\AccessTokenCreated' => [
-            'App\Listeners\RevokeOldTokens',
+            'App\Listeners\RevokeOtherTokens',
             'App\Listeners\PruneRevokedTokens',
         ]
     ];
 }
 ```
 
-### Revoke Old Tokens
+### Revoke Other Tokens
 
 ```php
 namespace App\Listeners;
@@ -191,7 +191,7 @@ namespace App\Listeners;
 use Laravel\Passport\Events\AccessTokenCreated;
 use Laravel\Passport\Token;
 
-class RevokeOldTokens{
+class RevokeOtherTokens{
 
     /**
      * Create the event listener.
