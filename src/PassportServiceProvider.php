@@ -15,6 +15,8 @@ class PassportServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        parent::boot();
+        
         $this->app->singleton(Connection::class, function(){
             return $this->app['db.connection'];
         });
