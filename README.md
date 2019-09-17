@@ -34,7 +34,7 @@ Or if you prefer, edit `composer.json` manually:
 ```json
 {
     "require": {
-        "nomadnt/lumen-passport": "^7.2"
+        "nomadnt/lumen-passport": "^7.4"
     }
 }
 ```
