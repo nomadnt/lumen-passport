@@ -14,8 +14,7 @@ class Passport extends LaravelPassport
      * @param  array  $options
      * @return void
      */
-    public static function routes($callback = null, array $options = [])
-    {
+    public static function routes($callback = null, array $options = []){
         $callback = $callback ?: function ($router) {
             $router->all();
         };

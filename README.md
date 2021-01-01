@@ -12,8 +12,8 @@ The idea come from https://github.com/dusterio/lumen-passport but try to make it
 
 ## Dependencies
 
-* PHP >= 7.3
-* Lumen >= 8.0
+* PHP >= 7.1.3
+* Lumen >= 5.6
 
 ## Installation via Composer
 
@@ -34,7 +34,7 @@ Or if you prefer, edit `composer.json` manually:
 ```json
 {
     "require": {
-        "nomadnt/lumen-passport": "^10.0"
+        "nomadnt/lumen-passport": "^7.4"
     }
 }
 ```
@@ -57,7 +57,7 @@ $app->routeMiddleware([
 ]);
 
 // Finally register two service providers - original one and Lumen adapter
-$app->register(Laravel\Passport\PassportServiceProvider::class);
+$app->register(Nomadnt\LumenPassport\PassportServiceProvider::class);
 ```
 
 ### Migrate and install Laravel Passport
@@ -80,8 +80,6 @@ $ cp vendor/laravel/lumen-framework/config/auth.php config
 ```
 
 ```php
-<?php
-
 return [
     'defaults' => ['guard' => 'api'],
 
@@ -101,7 +99,6 @@ Next, you should call the LumenPassport::routes method within the boot method of
 This method will register the routes necessary to issue access tokens and revoke access tokens, clients, and personal access tokens:
 
 ```php
-<?php
 
 namespace App\Providers;
 
@@ -120,7 +117,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // 
+
     }
 
     /**
@@ -148,7 +145,6 @@ class AuthServiceProvider extends ServiceProvider
 Make sure your user model uses Passport's ```HasApiTokens``` trait, eg.:
 
 ```php
-<?php
 
 namespace App;
 
@@ -174,7 +170,6 @@ on your `App\Http\Providers\EventServiceProvider` istead of using deprecated pro
 `Passport::$revokeOtherTokens = true;` and `Passport::$pruneRevokedTokens = true;`
 
 ```php
-<?php
 
 namespace App\Providers;
 
@@ -199,8 +194,6 @@ class EventServiceProvider extends ServiceProvider{
 ### Revoke Other Tokens
 
 ```php
-<?php
-
 namespace App\Listeners;
 
 use Laravel\Passport\Events\AccessTokenCreated;
@@ -237,8 +230,6 @@ class RevokeOtherTokens
 ### Prune Revoked Tokens
 
 ```php
-<?php
-
 namespace App\Listeners;
 
 use Laravel\Passport\Events\AccessTokenCreated;
