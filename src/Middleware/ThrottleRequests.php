@@ -92,9 +92,6 @@ class ThrottleRequests
         if ($route = $request->route()) {
             return sha1($request->getHost().'|'.$request->ip());
             //return sha1($request->method().'|'.$request->getHost().'|'.$request->ip());
-
-            // old stuff from laravel
-            //return sha1($route->getDomain().'|'.$request->ip());
         }
 
         throw new RuntimeException(
