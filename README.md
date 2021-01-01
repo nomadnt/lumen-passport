@@ -80,6 +80,8 @@ $ cp vendor/laravel/lumen-framework/config/auth.php config
 ```
 
 ```php
+<?php
+
 return [
     'defaults' => ['guard' => 'api'],
 
@@ -99,6 +101,7 @@ Next, you should call the LumenPassport::routes method within the boot method of
 This method will register the routes necessary to issue access tokens and revoke access tokens, clients, and personal access tokens:
 
 ```php
+<?php
 
 namespace App\Providers;
 
@@ -145,6 +148,7 @@ class AuthServiceProvider extends ServiceProvider
 Make sure your user model uses Passport's ```HasApiTokens``` trait, eg.:
 
 ```php
+<?php
 
 namespace App;
 
@@ -170,6 +174,7 @@ on your `App\Http\Providers\EventServiceProvider` istead of using deprecated pro
 `Passport::$revokeOtherTokens = true;` and `Passport::$pruneRevokedTokens = true;`
 
 ```php
+<?php
 
 namespace App\Providers;
 
@@ -194,6 +199,8 @@ class EventServiceProvider extends ServiceProvider{
 ### Revoke Other Tokens
 
 ```php
+<?php
+
 namespace App\Listeners;
 
 use Laravel\Passport\Events\AccessTokenCreated;
@@ -230,6 +237,8 @@ class RevokeOtherTokens
 ### Prune Revoked Tokens
 
 ```php
+<?php
+
 namespace App\Listeners;
 
 use Laravel\Passport\Events\AccessTokenCreated;
