@@ -19,20 +19,6 @@ class RouteRegistrar extends Registrar
     }
 
     /**
-     * Register routes for transient tokens, clients, and personal access tokens.
-     *
-     * @return void
-     */
-    public function all()
-    {
-        $this->forAuthorization();
-        $this->forAccessTokens();
-        $this->forTransientTokens();
-        $this->forClients();
-        $this->forPersonalAccessTokens();
-    }
-
-    /**
      * Register the routes needed for authorization.
      *
      * @return void

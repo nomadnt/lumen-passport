@@ -5,8 +5,8 @@ namespace Nomadnt\LumenPassport;
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Passport as LaravelPassport;
 
-class Passport extends LaravelPassport{
-
+class Passport extends LaravelPassport
+{
     /**
      * Binds the Passport routes into the controller.
      *
