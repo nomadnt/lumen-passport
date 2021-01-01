@@ -29,35 +29,37 @@ $ cd lumen-app
 $ composer require nomadnt/lumen-passport
 ```
 
-Or if you prefer, edit `composer.json` manually:
-
-```json
-{
-    "require": {
-        "nomadnt/lumen-passport": "^7.4"
-    }
-}
-```
-
-### Modify the bootstrap flow (```bootstrap/app.php``` file)
+### Modify the bootstrap flow (`bootstrap/app.php` file)
 
 We need to enable both Laravel Passport provider and Lumen-specific provider:
 
 ```php
-// Enable Facades
+<?php
+
+...
+
 $app->withFacades();
 
-// Enable Eloquent
 $app->withEloquent();
 
-// Enable auth middleware (shipped with Lumen)
+...
+
+$app->configure('app');
+$app->configure('auth');
+
+...
+
 $app->routeMiddleware([
     'auth'     => App\Http\Middleware\Authenticate::class,
     'throttle' => Nomadnt\LumenPassport\Middleware\ThrottleRequests::class
 ]);
 
-// Finally register two service providers - original one and Lumen adapter
-$app->register(Nomadnt\LumenPassport\PassportServiceProvider::class);
+// $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
+// $app->register(App\Providers\EventServiceProvider::class);
+$app->register(Laravel\Passport\PassportServiceProvider::class);
+
+...
 ```
 
 ### Migrate and install Laravel Passport
@@ -80,6 +82,8 @@ $ cp vendor/laravel/lumen-framework/config/auth.php config
 ```
 
 ```php
+<?php
+
 return [
     'defaults' => ['guard' => 'api'],
 
@@ -99,6 +103,7 @@ Next, you should call the LumenPassport::routes method within the boot method of
 This method will register the routes necessary to issue access tokens and revoke access tokens, clients, and personal access tokens:
 
 ```php
+<?php
 
 namespace App\Providers;
 
@@ -117,7 +122,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
+        // 
     }
 
     /**
@@ -142,9 +147,10 @@ class AuthServiceProvider extends ServiceProvider
 
 ## User model
 
-Make sure your user model uses Passport's ```HasApiTokens``` trait, eg.:
+Make sure your user model uses Passport's `HasApiTokens` trait, eg.:
 
 ```php
+<?php
 
 namespace App;
 
@@ -170,6 +176,7 @@ on your `App\Http\Providers\EventServiceProvider` istead of using deprecated pro
 `Passport::$revokeOtherTokens = true;` and `Passport::$pruneRevokedTokens = true;`
 
 ```php
+<?php
 
 namespace App\Providers;
 
@@ -194,6 +201,8 @@ class EventServiceProvider extends ServiceProvider{
 ### Revoke Other Tokens
 
 ```php
+<?php
+
 namespace App\Listeners;
 
 use Laravel\Passport\Events\AccessTokenCreated;
@@ -230,6 +239,8 @@ class RevokeOtherTokens
 ### Prune Revoked Tokens
 
 ```php
+<?php
+
 namespace App\Listeners;
 
 use Laravel\Passport\Events\AccessTokenCreated;
