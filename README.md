@@ -57,7 +57,7 @@ $app->routeMiddleware([
 ]);
 
 // Finally register two service providers - original one and Lumen adapter
-$app->register(Laravel\Passport\PassportServiceProvider::class);
+$app->register(Nomadnt\LumenPassport\PassportServiceProvider::class);
 ```
 
 ### Migrate and install Laravel Passport
@@ -117,7 +117,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // 
+
     }
 
     /**

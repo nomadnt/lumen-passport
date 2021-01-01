@@ -5,8 +5,8 @@ namespace Nomadnt\LumenPassport;
 use Illuminate\Support\Facades\Route;
 use Laravel\Passport\Passport as LaravelPassport;
 
-class Passport extends LaravelPassport
-{
+class Passport extends LaravelPassport{
+
     /**
      * Binds the Passport routes into the controller.
      *
@@ -14,8 +14,7 @@ class Passport extends LaravelPassport
      * @param  array  $options
      * @return void
      */
-    public static function routes($callback = null, array $options = [])
-    {
+    public static function routes($callback = null, array $options = []){
         $callback = $callback ?: function ($router) {
             $router->all();
         };
