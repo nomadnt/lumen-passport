@@ -12,95 +12,154 @@ The idea come from https://github.com/dusterio/lumen-passport but try to make it
 
 ## Dependencies
 
-* PHP >= 7.1.3
-* Lumen >= 5.6
+* PHP >= 7.3.0
+* Lumen >= 8.0
 
-## Installation via Composer
+## Installation
 
-First install Lumen if you don't have it yet:
-```bash
-$ composer create-project --prefer-dist laravel/lumen lumen-app
+First of all let's install Lumen Framework if you haven't already.
+
+```sh
+composer create-project --prefer-dist laravel/lumen lumen-app && cd lumen-app
 ```
 
 Then install Lumen Passport (it will fetch Laravel Passport along):
 
-```bash
-$ cd lumen-app
-$ composer require nomadnt/lumen-passport
-```
-
-### Modify the bootstrap flow (`bootstrap/app.php` file)
-
-We need to enable both Laravel Passport provider and Lumen-specific provider:
-
-```php
-<?php
-
-...
-
-$app->withFacades();
-
-$app->withEloquent();
-
-...
-
-$app->configure('app');
-$app->configure('auth');
-
-...
-
-$app->routeMiddleware([
-    'auth'     => App\Http\Middleware\Authenticate::class,
-    'throttle' => Nomadnt\LumenPassport\Middleware\ThrottleRequests::class
-]);
-
-// $app->register(App\Providers\AppServiceProvider::class);
-$app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
-$app->register(Laravel\Passport\PassportServiceProvider::class);
-
-...
-```
-
-### Migrate and install Laravel Passport
-
-```bash
-# Create new tables for Passport
-php artisan migrate
-
-# Install encryption keys and other necessary stuff for Passport
-php artisan passport:install
+```sh
+composer require nomadnt/lumen-passport
 ```
 
 ## Configuration
 
-Edit config/auth.php to suit your needs. A simple example:
+Generate your APP_KEY and update .env with single command
 
-```bash
-$ mkdir config
-$ cp vendor/laravel/lumen-framework/config/auth.php config
+```sh
+sed -i "s|\(APP_KEY=\)\(.*\)|\1$(openssl rand -base64 24)|" .env
 ```
+
+Configure your database connection (ie to use SQLite)
+This is how your .env file should looking after the changes
+
+```env
+APP_NAME=Lumen
+APP_ENV=local
+APP_KEY=<my-super-strong-api-key>
+APP_DEBUG=true
+APP_URL=http://localhost:8000
+APP_TIMEZONE=UTC
+
+LOG_CHANNEL=stack
+LOG_SLACK_WEBHOOK_URL=
+
+DB_CONNECTION=sqlite
+
+CACHE_DRIVER=file
+QUEUE_CONNECTION=sync
+```
+
+Copy the Lumen configuration folder to your project
+
+```sh
+cp -a vendor/laravel/lumen-framework/config config
+```
+
+Update `guards` and `provider` section of your config/auth.php to match Passport requirements
 
 ```php
 <?php
 
 return [
-    'defaults' => ['guard' => 'api'],
+    ...
 
     'guards' => [
-        'api' => ['driver' => 'passport', 'provider' => 'users'],
+        'api' => ['driver' => 'passport', 'provider' => 'users']
     ],
 
+    ...
+
     'providers' => [
-        'users' => ['driver' => 'eloquent', 'model' => \App\User::class]
+        'users' => ['driver' => 'eloquent', 'model' => \App\Models\User::class]
     ]
+
+    ...
 ];
+```
+
+You need to change a little the `bootstrap/app.php` file doing the following:
+
+```php
+<?php
+
+...
+
+// enable facades
+$app->withFacades();
+
+// enable eloquent
+$app->withEloquent();
+
+...
+
+$app->configure('app');
+
+// initialize auth configuration
+$app->configure('auth');
+
+...
+
+// enable auth and throttle middleware
+$app->routeMiddleware([
+    'auth'     => App\Http\Middleware\Authenticate::class,
+    'throttle' => Nomadnt\LumenPassport\Middleware\ThrottleRequests::class
+]);
+
+...
+
+// register required service providers
+
+// $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
+$app->register(Laravel\Passport\PassportServiceProvider::class);
+// $app->register(App\Providers\EventServiceProvider::class);
+
+...
+```
+
+Create database.sqlite
+
+```sh
+touch database/database.sqlite
+```
+
+Lauch the migrations
+
+```sh
+php artisan migrate
+```
+
+Install Laravel passport
+
+```sh
+# Install encryption keys and other necessary stuff for Passport
+php artisan passport:install
+```
+
+The previous command should give back to you an output similar to this:
+
+```sh
+Encryption keys generated successfully.
+Personal access client created successfully.
+Client ID: 1
+Client secret: BxSueZnqimNTE0r98a0Egysq0qnonwkWDUl0KmE5
+Password grant client created successfully.
+Client ID: 2
+Client secret: VFWuiJXTJhjb46Y04llOQqSd3kP3goqDLvVIkcIu
 ```
 
 ## Registering Routes
 
-Next, you should call the LumenPassport::routes method within the boot method of your application (one of your service providers).
-This method will register the routes necessary to issue access tokens and revoke access tokens, clients, and personal access tokens:
+Now is time to register the passport routes necessary to issue access tokens and revoke access tokens, clients, and personal access tokens.  
+To do this open you `app/Providers/AuthServiceProvider.php` and change the `boot` function to reflect the example below.
 
 ```php
 <?php
@@ -111,6 +170,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Carbon;
 
+// don't forget to include Passport
 use Nomadnt\LumenPassport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
@@ -171,9 +231,28 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
 ## Access Token Events
 
-If you want to revoke or purge tokens you have to create related Listeners and register 
-on your `App\Http\Providers\EventServiceProvider` istead of using deprecated properties
+### Prune and/or Revoke tokens
+
+If you want to revoke or purge tokens on event based you have to create related Listeners and 
+register on your `app/Http/Providers/EventServiceProvider.php` istead of using deprecated properties
 `Passport::$revokeOtherTokens = true;` and `Passport::$pruneRevokedTokens = true;`
+
+First you need to make sure that `EventServiceProvider` is registered on your `bootstrap/app.php`
+
+```php
+<?php
+
+...
+
+// $app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
+$app->register(Laravel\Passport\PassportServiceProvider::class);
+$app->register(App\Providers\EventServiceProvider::class);
+
+...
+```
+
+Then you need to listen for `AccessTokenCreated` event and register your required listeners
 
 ```php
 <?php
@@ -198,7 +277,7 @@ class EventServiceProvider extends ServiceProvider{
 }
 ```
 
-### Revoke Other Tokens
+Create the `app/Listeners/RevokeOtherTokens.php` file and put the following content
 
 ```php
 <?php
@@ -236,7 +315,7 @@ class RevokeOtherTokens
 }
 ```
 
-### Prune Revoked Tokens
+Create the `app/Listeners/PruneRevokedTokens.php` file and put the following content
 
 ```php
 <?php
