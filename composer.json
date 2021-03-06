@@ -13,7 +13,7 @@
     ],
     "type": "library",
     "require": {
-        "php": "^7.3.0",
+        "php": ">=7.3",
         "laravel/passport": "^10.1.0"
     },
     "autoload": {
