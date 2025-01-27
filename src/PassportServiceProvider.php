@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Nomadnt\LumenPassport;
 
 use Laravel\Passport\PassportServiceProvider as LaravelPassportServiceProvider;
 use Illuminate\Support\Facades\Route;
