@@ -157,6 +157,17 @@ Client ID: 2
 Client secret: VFWuiJXTJhjb46Y04llOQqSd3kP3goqDLvVIkcIu
 ```
 
+Add the following binding to your `bootstrap/app.php`:
+
+```php
+$app->singleton(
+    Illuminate\Contracts\Routing\ResponseFactory::class,
+    Laravel\Lumen\Http\ResponseFactory::class
+);
+```
+
+This binding is necessary for Passport to work properly with Lumen, as it tells Lumen's container which implementation to use for the ResponseFactory contract.
+
 ## User model
 
 Make sure your user model uses Passport's `HasApiTokens` trait, eg.:
@@ -305,18 +316,3 @@ class PruneRevokedTokens
     }
 }
 ```
-
-## Troubleshooting
-
-### ResponseFactory Not Instantiable
-
-If you encounter an error related to `ResponseFactory` not being instantiable, you need to add the following to your `bootstrap/app.php`:
-
-```php
-$app->singleton(
-    Illuminate\Contracts\Routing\ResponseFactory::class,
-    Laravel\Lumen\Http\ResponseFactory::class
-);
-```
-
-This binding is necessary because Lumen's container needs to be explicitly told which implementation to use for the ResponseFactory contract.
