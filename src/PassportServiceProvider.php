@@ -18,7 +18,7 @@ class PassportServiceProvider extends LaravelPassportServiceProvider
             'as' => 'passport.',
             'prefix' => config('passport.path', 'oauth'),
         ], function () {
-            $this->loadRoutesFrom(base_path('src/web.php'));
+            $this->loadRoutesFrom(__DIR__ . '/web.php');
         });
     }
 } 
