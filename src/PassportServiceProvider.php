@@ -2,23 +2,23 @@
 
 namespace Nomadnt\LumenPassport;
 
+use Laravel\Passport\Passport;
 use Laravel\Passport\PassportServiceProvider as LaravelPassportServiceProvider;
-use Illuminate\Support\Facades\Route;
 
 class PassportServiceProvider extends LaravelPassportServiceProvider
 {
     /**
-     * Register Passport's routes.
+     * Bootstrap the application services.
      *
      * @return void
      */
-    protected function registerRoutes()
+    public function boot()
     {
-        Route::group([
-            'as' => 'passport.',
-            'prefix' => config('passport.path', 'oauth'),
-        ], function () {
-            $this->loadRoutesFrom(__DIR__ . '/web.php');
-        });
+        // Remove the routes registration as they should be done in a different way
+        $this->registerResources();
+        $this->registerPublishing();
+        $this->registerCommands();
+
+        $this->deleteCookieOnLogout();
     }
 } 
