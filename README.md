@@ -12,8 +12,9 @@ The idea come from https://github.com/dusterio/lumen-passport but try to make it
 
 ## Dependencies
 
-* PHP >= 7.3.0
-* Lumen >= 8.0
+* PHP >= 8.0
+* Lumen >= 11.0
+* Laravel Passport >= 12.0
 
 ## Installation
 
@@ -119,7 +120,7 @@ $app->routeMiddleware([
 
 // $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
-$app->register(Laravel\Passport\PassportServiceProvider::class);
+$app->register(Nomadnt\LumenPassport\PassportServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 ...
@@ -154,55 +155,6 @@ Client secret: BxSueZnqimNTE0r98a0Egysq0qnonwkWDUl0KmE5
 Password grant client created successfully.
 Client ID: 2
 Client secret: VFWuiJXTJhjb46Y04llOQqSd3kP3goqDLvVIkcIu
-```
-
-## Registering Routes
-
-Now is time to register the passport routes necessary to issue access tokens and revoke access tokens, clients, and personal access tokens.  
-To do this open you `app/Providers/AuthServiceProvider.php` and change the `boot` function to reflect the example below.
-
-```php
-<?php
-
-namespace App\Providers;
-
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Carbon;
-
-// don't forget to include Passport
-use Nomadnt\LumenPassport\Passport;
-
-class AuthServiceProvider extends ServiceProvider
-{
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        // 
-    }
-
-    /**
-     * Boot the authentication services for the application.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        // register passport routes
-        Passport::routes();
-
-        // change the default token expiration
-        Passport::tokensExpireIn(Carbon::now()->addDays(15));
-
-        // change the default refresh token expiration
-        Passport::refreshTokensExpireIn(Carbon::now()->addDays(30));
-    }
-}
-
 ```
 
 ## User model
@@ -246,7 +198,7 @@ First you need to make sure that `EventServiceProvider` is registered on your `b
 
 // $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
-$app->register(Laravel\Passport\PassportServiceProvider::class);
+$app->register(Nomadnt\LumenPassport\PassportServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
 
 ...
